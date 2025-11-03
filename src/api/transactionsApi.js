@@ -4,19 +4,17 @@ const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const transactionsApi = createApi({
   reducerPath: "transactionsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${baseURL}/api`,  // removed extra slash
-  }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${baseURL}/api/` }),
   tagTypes: ["Transactions"],
   endpoints: (builder) => ({
     getTransactions: builder.query({
-      query: () => `/transactions`,
+      query: () => "transactions",
       providesTags: ["Transactions"],
     }),
 
     addTransaction: builder.mutation({
       query: (data) => ({
-        url: `/transactions`,
+        url: "transactions",
         method: "POST",
         body: data,
       }),
@@ -25,7 +23,7 @@ export const transactionsApi = createApi({
 
     deleteTransaction: builder.mutation({
       query: (id) => ({
-        url: `/transactions/${id}`,
+        url: `transactions/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Transactions"],
@@ -38,4 +36,5 @@ export const {
   useAddTransactionMutation,
   useDeleteTransactionMutation,
 } = transactionsApi;
+
 
