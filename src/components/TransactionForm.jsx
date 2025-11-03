@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useCreateTransactionMutation } from '../api/transactionsApi'
+import { useAddTransactionMutation } from '../api/transactionsApi'
 
 export default function TransactionForm() {
   const [form, setForm] = useState({
@@ -10,19 +10,26 @@ export default function TransactionForm() {
     date: new Date().toISOString().slice(0, 10),
   })
 
-  const [createTx, { isLoading }] = useCreateTransactionMutation()
+  const [addTransaction, { isLoading }] = useAddTransactionMutation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!form.amount || !form.category) return alert('Amount + Category required')
 
     try {
-      await createTx({
+      await addTransaction({
         ...form,
         amount: Number(form.amount),
         date: new Date(form.date).toISOString(),
       }).unwrap()
-      setForm({ type: 'expense', amount: '', description: '', category: '', date: new Date().toISOString().slice(0,10) })
+
+      setForm({
+        type: 'expense',
+        amount: '',
+        description: '',
+        category: '',
+        date: new Date().toISOString().slice(0, 10)
+      })
     } catch (err) {
       alert('Failed to add')
     }
@@ -64,3 +71,4 @@ export default function TransactionForm() {
     </form>
   )
 }
+
